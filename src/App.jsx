@@ -719,6 +719,40 @@ function TestimonialsBlocks() {
 }
 
 function Contact() {
+  const [form, setForm] = React.useState({ name: "", email: "", message: "", honey: "" });
+  const [status, setStatus] = React.useState({ ok: false, msg: "" });
+  const [sending, setSending] = React.useState(false);
+
+  const onChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    if (form.honey) return; // bot
+    setSending(true);
+    setStatus({ ok: false, msg: "" });
+    try {
+      const res = await fetch(`https://formsubmit.co/ajax/${CONFIG.email}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          _subject: "New message from cesarkdiab.com",
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+      if (!res.ok) throw new Error("Network");
+      setStatus({ ok: true, msg: "Message sent. Thanks!" });
+      setForm({ name: "", email: "", message: "", honey: "" });
+    } catch (err) {
+      setStatus({ ok: false, msg: "Could not send. Please email me directly." });
+    } finally {
+      setSending(false);
+    }
+  }
+
   return (
     <Section id="contact" title="Contact">
       <div className="w-full">
@@ -728,25 +762,59 @@ function Contact() {
             Email me at <a href={`mailto:${CONFIG.email}`} className="text-blue-600 dark:text-blue-400 hover:underline">{CONFIG.email}</a>
             {CONFIG.phone ? <> or call <span className="whitespace-nowrap">{CONFIG.phone}</span></> : null}. Or use the form below:
           </p>
-          <form action={CONFIG.form.action} method="POST" className="mt-4 space-y-3">
-            <input type="hidden" name="_subject" value="New message from cesarkdiab.com" />
-            <input type="hidden" name="_captcha" value="false" />
+
+          {/* AJAX form (no page redirect) */}
+          <form onSubmit={onSubmit} className="mt-4 space-y-3">
+            {/* honeypot for spam */}
+            <input type="text" name="honey" value={form.honey} onChange={onChange} className="hidden" tabIndex={-1} autoComplete="off" />
+
             <div>
               <label className="text-xs text-slate-500 dark:text-slate-400">Your Name</label>
-              <input name="name" required className="mt-1 w-full rounded-xl border border-slate-300/70 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60 px-3 py-2 text-sm" />
+              <input
+                name="name"
+                required
+                value={form.name}
+                onChange={onChange}
+                className="mt-1 w-full rounded-xl border border-slate-300/70 dark:border-slate-700 bg-white/90 dark:bg-slate-900/60 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/70"
+                placeholder="Jane Doe"
+              />
             </div>
             <div>
               <label className="text-xs text-slate-500 dark:text-slate-400">Email</label>
-              <input type="email" name="email" required className="mt-1 w-full rounded-xl border border-slate-300/70 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60 px-3 py-2 text-sm" />
+              <input
+                type="email"
+                name="email"
+                required
+                value={form.email}
+                onChange={onChange}
+                className="mt-1 w-full rounded-xl border border-slate-300/70 dark:border-slate-700 bg-white/90 dark:bg-slate-900/60 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/70"
+                placeholder="you@example.com"
+              />
             </div>
             <div>
               <label className="text-xs text-slate-500 dark:text-slate-400">Message</label>
-              <textarea name="message" rows={4} required className="mt-1 w-full rounded-xl border border-slate-300/70 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60 px-3 py-2 text-sm" />
+              <textarea
+                name="message"
+                rows={4}
+                required
+                value={form.message}
+                onChange={onChange}
+                className="mt-1 w-full rounded-xl border border-slate-300/70 dark:border-slate-700 bg-white/90 dark:bg-slate-900/60 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/70"
+                placeholder="How can I help?"
+              />
             </div>
-            <button className={`inline-flex items-center rounded-full px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r ${CONFIG.color.primary} shadow ${CONFIG.color.ring}`}>
-              Send message
+            <button disabled={sending} className={`inline-flex items-center rounded-full px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r ${CONFIG.color.primary} shadow ${CONFIG.color.ring} disabled:opacity-60`}>
+              {sending ? "Sending…" : "Send message"}
             </button>
           </form>
+
+          {/* tiny toast/in-place status */}
+          {status.msg && (
+            <div className={`mt-3 text-xs ${status.ok ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
+              {status.msg}
+            </div>
+          )}
+
           <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">First submission triggers a quick FormSubmit verification email to activate delivery.</p>
         </Card>
       </div>
@@ -811,4 +879,3 @@ export default function App() {
     </div>
   );
 }
-
