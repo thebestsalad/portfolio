@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import headshot from "./assets/headshot.jpg";
 
 /*
   Cesar Diab • Cybersecurity & Digital Forensics Portfolio (v2.8)
@@ -31,8 +32,7 @@ const CONFIG = {
     htbId: "HTB-EB1BCAD53B",
   },
   resumePdf: "/Cesar_Diab_Resume.pdf", // TODO: replace with public resume URL
-  avatar:
-    "/headshots.jpg",
+  avatar: headshot,
   color: {
     primary: "from-blue-500 to-slate-600",
     ring: "focus-visible:ring-blue-500",
