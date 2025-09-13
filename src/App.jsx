@@ -30,9 +30,9 @@ const CONFIG = {
     github: "https://github.com/thebestsalad",
     htbId: "HTB-EB1BCAD53B",
   },
-  resumePdf: "#", // TODO: replace with public resume URL
+  resumePdf: "/Cesar_Diab_Resume.pdf", // TODO: replace with public resume URL
   avatar:
-    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=640&q=60&auto=format&fit=crop",
+    "/headshots.jpg",
   color: {
     primary: "from-blue-500 to-slate-600",
     ring: "focus-visible:ring-blue-500",
@@ -410,6 +410,7 @@ function Header() {
             href={CONFIG.resumePdf}
             target="_blank"
             rel="noreferrer"
+            download
             className={`hidden sm:inline-flex items-center rounded-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r ${CONFIG.color.primary} shadow hover:opacity-95 ${CONFIG.color.ring}`}
             aria-label="Download Resume"
           >
