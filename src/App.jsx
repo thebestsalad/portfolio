@@ -52,7 +52,7 @@ function MaintenancePage() {
           Site Update In Progress
         </h1>
         <p className="mt-3 text-slate-600 dark:text-slate-300">
-          I’m shipping new features & polishing the portfolio. Check back soon — meanwhile you can still reach me.
+          I’m shipping new features & polishing the portfolio. Check back soon! Meanwhile you can still reach me.
         </p>
 
         {/* Fun progress bar */}
