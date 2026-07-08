@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-carbon text-ink font-sans antialiased;
+  background-image: radial-gradient(rgba(94, 234, 212, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+::selection {
+  background: rgba(94, 234, 212, 0.25);
+}
+
+/* Display headings: Archivo expanded */
+.display {
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-variation-settings: 'wdth' 118;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* Evidence tag: manila paper chip with punched hole */
+.evidence-tag {
+  @apply inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider;
+  background: linear-gradient(180deg, #EBDDB4, #D9C892);
+  color: #4a4128;
+  padding: 3px 10px 3px 6px;
+  clip-path: polygon(0 50%, 10px 0, 100% 0, 100% 100%, 10px 100%);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+.evidence-tag::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: #0b0f14;
+  flex: none;
+  margin-left: 4px;
+}
+
+/* Hash strip under case cards */
+.hash-strip {
+  @apply font-mono text-[10px] text-faint tracking-widest overflow-hidden whitespace-nowrap;
+}
+
+/* Chain-of-custody timeline rail */
+.custody-rail {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    #2b3a4d 0 6px,
+    transparent 6px 12px
+  );
+  width: 2px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #5eead4;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+input, textarea, select {
+  @apply bg-carbon border border-line rounded px-3 py-2 text-sm text-ink placeholder-faint w-full;
+}
+input:focus, textarea:focus, select:focus {
+  @apply border-accent/60;
+  outline: none;
+}
+
+.btn {
+  @apply inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider px-4 py-2.5 rounded border transition-colors;
+}
+.btn-primary {
+  @apply btn bg-accent/10 border-accent/40 text-accent hover:bg-accent/20;
+}
+.btn-ghost {
+  @apply btn border-line text-dim hover:text-ink hover:border-faint;
+}
+.btn-danger {
+  @apply btn border-flag/40 text-flag hover:bg-flag/10;
+}
+
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001s !important;
+    transition-duration: 0.001s !important;
+  }
+}
